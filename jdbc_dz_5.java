@@ -14,7 +14,13 @@ public class jdbc_dz_5 {
                     SELECT COUNT(*) FROM organisation WHERE inn_id > 0;
                     """;
             String resultTable = """
-                    SELECT COUNT(ogrn) AS ogrn_count,name,inn_id FROM organisation GROUP BY ogrn,name,inn_id;  
+                    SELECT 
+                        o.name AS legal_type,
+                        COUNT(o.ogrn) AS org_count,
+                        SUM(c.price) AS total_price
+                        FROM organisation o
+                        LEFT JOIN contracts c ON o.inn_id = c.inn_id
+                        GROUP BY o.name;  
                     """;
             String selectAllTable = """
                     SELECT inn_id, name, adress, contacts FROM organisation;
